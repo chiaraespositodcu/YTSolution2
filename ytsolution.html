@@ -1,73 +1,84 @@
-<html>
-            <head>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-                    <script src="//www.youtube.com/player_api"></script>
-            </head> 
-            <body>
-                <p>
-                    This is some text
-                </p>
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> PrototypeTok B </title>
+</head>
 
-                <div style="margin-top:1000px;margin-bottom:1000px;">
-               </div>
-                <div id="player"></div>
-                <script type="text/javascript">
-                    src="//www.youtube.com/player_api"
-                    var player;
-                    function onYouTubeIframeAPIReady() {
-                      player = new YT.Player('player', {
-                        height: '245',
-                        width: '445',
-                        videoId: 'FSfz0NxzN80',
-                        rel:'0'             
-                      });
-                    } 
+<body>
+  <button onclick="Playrandom()">Play a Random video</button>
+  <script>
+var videos = [
+    "videos/video1.mp4",
+    "videos/video2.mp4",
+    "videos/video3.mp4",
+    "videos/video4.mp4",
+];
+var playedVideos = [];
 
-                   var videos = document.getElementsByTagName("iframe"), fraction = 0.8;
-                    function checkScroll() {
+var videoId = getRandomInt(0, 9);
+var elemVideo = document.getElementById('video');
+elemVideo.setAttribute('src', '/' + videos[videoId]);
+var btn = document.getElementById('playRandom');
 
-                      for(var i = 0; i < videos.length; i++) {
-                        var video = videos[i];
+btn.addEventListener('click', playRandom);
 
-                        var x = 0,
-                            y = 0,
-                            w = video.width,
-                            h = video.height,
-                            r, //right
-                            b, //bottom 
-                            visibleX, visibleY, visible,
-                            parent;
+function playRandom(e) {
+    var nextId = getRandomInt(0, 9);
 
-                        parent = video;
-                        while (parent && parent !== document.body) {
-                          x += parent.offsetLeft;
-                          y += parent.offsetTop;
-                          parent = parent.offsetParent;
-                        }
+    if (nextId != videoId) {
+        if (!playNext(nextId)) {
+            playRandom(e);
+        }
+    } else {
+        while (nextId == videoId) {
+            nextId = getRandomInt(0, 9);
+        }
 
-                        r = x + parseInt(w);
-                        b = y + parseInt(h);
+        if (!playNext(nextId)) {
+            playRandom(e);
+        }
+    }
+}
 
-                        visibleX = Math.max(0, Math.min(w, window.pageXOffset + window.innerWidth - x, r - window.pageXOffset));
-                        visibleY = Math.max(0, Math.min(h, window.pageYOffset + window.innerHeight - y, b - window.pageYOffset));
-                        visible = visibleX * visibleY / (w * h);
+/* gets random whole number between 0 and 9 */
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
-                        if (visible > fraction) {           
-                      player.playVideo();
-                        } 
-                        else if(visible < fraction) {
-                      player.pauseVideo();
-                        }
-                      }
-                    };
+function playNext(id) {
+    // checks if the video has already been played
+    for (var src in playedVideos) {
+        if (src == videos[id]) {
+            return false;
+        }
+    }
 
-                    window.addEventListener('scroll', checkScroll, false);
-                    window.addEventListener('resize', checkScroll, false);
-                    //check at least once so you don't have to wait for scrolling for the video to start
-                    window.addEventListener('load', checkScroll, false);
+    elemVideo.setAttribute('src', '/' + videos[id]);
+    elemVideo.play();
 
-                    checkScroll();
+    // adds src to arr of played videos
+    playedVideos.push(videos[id]);
 
-                </script>
-            </body>
-        </html>
+    /*
+     * Everything from here on is optional depending on whether you want to
+     * - iterate over the arr of videos and play each videos at least once before starting over or
+     * - you want to stop playing videos after playing each at least once
+     */
+
+    // empties the played videos arr and allows you to start playing a new set of random videos
+    if (playedVideos.length() == 10) {
+        playedVideos = []; 
+        // if you'd like to stop playing videos altogether at this, point delete the previous statement and display a prompt saying the playlist is over
+        // or if you'd like to reset the playlist, then remove the event listener ('playRandom') and display a reset button that starts everything over from the beginning.
+    }
+
+    return true;
+}
+</script>
+</body>
+</html>
