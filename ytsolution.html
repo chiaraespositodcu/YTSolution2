@@ -5,16 +5,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title> PrototypeTok B </title>
+<link rel="stylesheet" href="css.css">
 </head>
 
 <body>
+    <h1 style="color: white; font-size: 40px; text-align: center; font-family: Arial, Helvetica, sans-serif;padding-bottom: 5px;">PrototypeTok</br><b>B</b></h1>
+    <br>
+    <button onclick="playVid(), changebuttonytext()" type="button">Load a random video</button>
+<br>
     <div class="videoHolder">
         <video controls id="video" 
         src="">
         </video>
     </div>
-    <button onclick="playVid(), changebuttonytext()" type="button">Play a random video</button>
 
+    
   <script>
 
 var vid = document.getElementById("video");

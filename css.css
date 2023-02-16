@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+   color: white;
+   background-color: black;
+   height: 100%;
+   display: grid;
+   place-items: center;
+}
+
+
+#video {
+    position: relative;
+    width: fit-content;
+    height: 820px;
+    background-color: white;
+}
+
+button {
+    width: 30%;
+    background-color: white;
+    font-size: x-large;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+button:hover {
+    background-color: rgb(212, 212, 212);
+
+}
+
+button:active {
+    background-color: rgb(255, 213, 0);
+}
